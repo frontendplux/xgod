@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
 
           local-dir: ./
-          server-dir: /home/moninqnb/xgod
+          server-dir: ./
 
           # FULL overwrite deployment
           dangerous-clean-slate: true
@@ -31,5 +31,4 @@ jobs:
             upload/**
             upload/*
             .git/**
-            .github/**
             README.md
