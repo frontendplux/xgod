@@ -6,7 +6,7 @@ on:
 
 jobs:
   ftp-deploy:
-    name: Upload Entire Repo to /xgod
+    name: Upload Entire Repo to /home/moninqnb/xgod
     runs-on: ubuntu-latest
 
     steps:
@@ -21,10 +21,12 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
 
           local-dir: ./
-          server-dir: /public_html/xgod
+          server-dir: /home/moninqnb/xgod
 
+          # FULL overwrite deployment
           dangerous-clean-slate: true
 
+          # FOLDERS/FILES THAT MUST NOT BE TOUCHED
           exclude: |
             upload/**
             upload/*
