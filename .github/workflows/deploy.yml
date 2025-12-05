@@ -6,7 +6,7 @@ on:
 
 jobs:
   ftp-deploy:
-    name: Upload Entire Repo to /shoplenca
+    name: Upload Entire Repo to /xgod
     runs-on: ubuntu-latest
 
     steps:
@@ -19,6 +19,15 @@ jobs:
           server: ${{ secrets.HOST_NAME }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          server-dir: ./          # Remote path (adjust if needed)
-          local-dir: ./           # Upload local project root
-          
+
+          local-dir: ./
+          server-dir: /public_html/xgod
+
+          dangerous-clean-slate: true
+
+          exclude: |
+            upload/**
+            upload/*
+            .git/**
+            .github/**
+            README.md
