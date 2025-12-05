@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
 
           local-dir: ./
-          server-dir: ./
+          server-dir: /
 
           # FULL overwrite deployment
           dangerous-clean-slate: true
