@@ -21,9 +21,4 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
           server-dir: ./          # Remote path (adjust if needed)
           local-dir: ./           # Upload local project root
-          exclude: |
-            **/.git*
-            **/.github*
-            **/node_modules/**
-            **/vendor/**
-            **/uploads/**
+          
