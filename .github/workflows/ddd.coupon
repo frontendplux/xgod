@@ -1,0 +1,23 @@
+name: 🚀 Auto FTP Deploy to shoplenca 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    name: Upload Entire Repo to /shoplenca
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📦 Checkout repo
+      uses: actions/checkout@v4
+
+    - name: 🚀 Upload to FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASS }}
+        server-dir: ./         # 👈 this matches your hosting folder
+        local-dir: ./                 # 👈 upload entire repo

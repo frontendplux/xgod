@@ -1,0 +1,32 @@
+name: 🚀 Auto FTP Deploy to shoplenca
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    name: Upload Entire Repo (root of FTP)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🚀 Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.HOST_NAME }}   # already points to your FTP root (/home/moninqnb/xgod)
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+
+          local-dir: ./
+          server-dir: /
+
+          dangerous-clean-slate: true
+
+          exclude: |
+            upload/**
+            .git/**
+            .github/**
+            README.md
