@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="plugin/bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="plugin/RemixIcon_Fonts_v4.1.0/rimix-icon/remixicon.css">
+    <title>xgod - anonymos transfer and withdrawal</title>
+</head>
+<body class="bg-light">
+
+    <div class="bg-white">
+        <header class="container p-2">
+            <h1 class="text-uppercase">xgod</h1>
+        </header>
+    </div>
+
+    <div class="col-11 mx-auto col-sm-4 my-3 bg-white p-3">
+        <form id="form">
+            <h2 class="text-capitalize">log in</h2>
+            <div class="text-muted">welcome back, to a world of transaction!</div>
+
+            <div class="my-3">
+                <div>Enter Email Address</div>
+                <div><input id="email" type="text" class="form-control p-2" required></div>
+            </div>
+
+            <div class="my-3">
+                <div>Enter password?</div>
+                <div><input id="password" type="password" class="form-control p-2" required></div>
+            </div>
+
+            <div class="my-3">
+                <button class="btn-warning btn p-2 col-12 text-capitalize" type="submit">
+                    continue to dashboard
+                </button>
+            </div>
+
+            <div class="text-center my-3">
+                <span>I don't have an account <a href="">signup</a></span>
+            </div>
+        </form>
+    </div>
+
+<script>
+// ---------- LOGIN SCRIPT ----------
+document.getElementById('form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    const fd = new FormData();
+    fd.append("email", email);
+    fd.append("password", password);
+    fd.append("action", "login");
+
+    const req = await fetch("main_function.php", {
+        method: "POST",
+        body: fd
+    });
+
+    const res = await req.json();
+
+    if (res.status === true) {
+        if (res.type === "new") {
+            showAlert("success", "welcome to xgod", "transfer cash anonymous with no restriction", () => {
+                window.location.href = 'signup.html?ty=new&u=' + res.data.email;
+            });
+        } else {
+            showAlert("success", "Welcome Back", "Enjoy fast anonymous transactions", () => {
+                window.location.href = 'signup.html?ty=old&u=' + res.data.email;
+            });
+        }
+    }
+    else {
+        showAlert("error", "Authentication Error", res.message);
+    }
+});
+</script>
+
+
+<!-- ---------- PORTABLE SWEET ALERT ---------- -->
+<script>
+(function(){
+    const css = `
+        .palert-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);display:flex;justify-content:center;align-items:center;z-index:999999;opacity:0;transition:opacity .25s}
+        .palert-overlay.show{opacity:1}
+        .palert-box{background:#fff;padding:25px;border-radius:15px;width:85%;max-width:350px;text-align:center;box-shadow:0 5px 20px rgba(0,0,0,.25);animation:palert-pop .25s ease;font-family:Arial}
+        @keyframes palert-pop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+        .palert-title{font-size:20px;font-weight:700;margin-bottom:10px}
+        .palert-msg{font-size:15px;margin-bottom:20px;color:#444}
+        .palert-btn{padding:10px 18px;border:none;border-radius:8px;color:#fff;cursor:pointer;font-weight:bold;width:110px}
+        .palert-success{background:#22c55e}
+        .palert-error{background:#ef4444}
+        .palert-warning{background:#f59e0b}
+    `;
+    const s = document.createElement("style");
+    s.textContent = css;
+    document.head.appendChild(s);
+
+    window.showAlert = function(type, title, msg, done=null){
+        const overlay = document.createElement("div");
+        overlay.className = "palert-overlay";
+
+        const box = document.createElement("div");
+        box.className = "palert-box";
+        box.innerHTML = `
+            <div class="palert-title">${title}</div>
+            <div class="palert-msg">${msg}</div>
+            <button class="palert-btn palert-${type}">OK</button>
+        `;
+
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        setTimeout(()=> overlay.classList.add("show"), 20);
+
+        box.querySelector("button").onclick = () => {
+            overlay.classList.remove("show");
+            setTimeout(()=> overlay.remove(), 250);
+            if (done) done();
+        };
+    };
+})();
+</script>
+
+</body>
+</html>
